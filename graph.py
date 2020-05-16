@@ -10,7 +10,8 @@ gdb = GraphDatabase.driver("bolt://localhost:7687", auth=("", ""))
 # Pre-condition: data (tree - dict/list/str), parent_id (ID of parent node)
 
 
-def format_str(x): x.replace("\\n", " ") \
+def format_str(x):
+    return x.replace("\\n", " ") \
         .replace("\\", "\\\\") \
         .replace("'", "\\'") \
         .replace('"', '\\"')
@@ -48,9 +49,7 @@ with gdb.session() as session:
         print("Specify manual to load")
         sys.exit(0)
 
-    output = subprocess.run(("mman -Thtml "
-                             + sys.argv[1]
-                             + " | cat").split(" "), stdout=subprocess.PIPE)
+    output = subprocess.run(("mman", "-Thtml", sys.argv[1]), stdout=subprocess.PIPE)
     output = output.stdout.decode("utf-8")
 
     data = dig(output, session)
