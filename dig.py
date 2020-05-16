@@ -4,7 +4,6 @@ from collections import defaultdict
 
 
 class dig():
-
     def __init__(self, html, session):
         self.final = {}
         self.session = session
