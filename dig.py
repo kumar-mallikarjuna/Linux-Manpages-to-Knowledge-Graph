@@ -24,16 +24,17 @@ class dig():
 
         d = defaultdict(str)
         key = ""
-        try:
-            headings = BeautifulSoup(s, "html.parser").find("h%d" % count)
-            for a in headings.next_siblings:
-                if(a.name == "h%d" % count):
-                    key = re.sub("\s+", " ", a.text)
-                    continue
+        heading = BeautifulSoup(s, "html.parser").find("h%d" % count)
 
-                d[key] += str(a)
-        except Exception:
+        if heading is None:
             return self.structure(count+1, s)
+        else:
+            while heading is not None:
+                if(heading.name == "h%d" % count):
+                    key = re.sub(r"\s+", " ", heading.text)
+                else:
+                    d[key] += str(heading)
+                heading = heading.next_sibling
 
         d_ = {}
 
